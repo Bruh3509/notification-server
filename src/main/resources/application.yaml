@@ -9,9 +9,11 @@ spring:
       authentication-database: admin
       username: root
       password: qwerty
-      database: notification
+      database: notifications
       port: 27017
       host: localhost
+  liquibase:
+    change-log: migration/
   kafka:
     consumer:
       auto-offset-reset: earliest
