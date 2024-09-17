@@ -4,6 +4,16 @@ spring:
   cloud:
     config:
       enabled: false
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: qwerty
+      database: notifications
+      port: 27017
+      host: localhost
+  liquibase:
+    change-log: migration/
   kafka:
     consumer:
       auto-offset-reset: earliest
@@ -22,7 +32,7 @@ spring:
       enabled: ALWAYS
 
 server:
-  port: 8081
+  port: 8084
 
 eureka:
   instance:
