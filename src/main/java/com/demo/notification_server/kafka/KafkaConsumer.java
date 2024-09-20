@@ -2,6 +2,7 @@ package com.demo.notification_server.kafka;
 
 import com.demo.cars.kafka.model.MyKafkaMessage;
 import com.demo.notification_server.mapper.NotificationMapper;
+import com.demo.notification_server.service.EmailService;
 import com.demo.notification_server.service.NotificationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 public class KafkaConsumer {
     NotificationService notificationService;
     NotificationMapper notificationMapper;
+    EmailService emailService;
 
     @KafkaListener(topics = "#{@environment.getProperty('spring.kafka.consumer.new-topic')}",
             groupId = "#{@environment.getProperty('spring.kafka.consumer.group-id')}")
@@ -25,6 +27,8 @@ public class KafkaConsumer {
         notificationService.addNewDocument(
                 notificationMapper.messageToAddRequest(newPayment)
         );
+        emailService.sendPaymentUrl(newPayment.email(), "Pay Ride",
+                "Please, pay for the ride%n%s".formatted(newPayment.paymentLink()));
     }
 
     @KafkaListener(topics = "#{@environment.getProperty('spring.kafka.consumer.update-topic')}",
