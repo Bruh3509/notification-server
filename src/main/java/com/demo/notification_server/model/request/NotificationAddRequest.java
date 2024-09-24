@@ -1,6 +1,6 @@
 package com.demo.notification_server.model.request;
 
-public record NotificationPostRequest(
+public record NotificationAddRequest(
         Long userId,
         String paymentLink,
         String email

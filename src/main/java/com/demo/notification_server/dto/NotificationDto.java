@@ -14,6 +14,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NotificationDto {
+    String paymentLink;
     String email;
     Status status;
     Instant lastCheck;

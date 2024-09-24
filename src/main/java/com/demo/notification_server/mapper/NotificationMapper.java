@@ -1,8 +1,10 @@
 package com.demo.notification_server.mapper;
 
+import com.demo.cars.kafka.model.MyKafkaMessage;
 import com.demo.notification_server.document.Notification;
 import com.demo.notification_server.dto.NotificationDto;
-import com.demo.notification_server.model.request.NotificationPostRequest;
+import com.demo.notification_server.model.request.NotificationAddRequest;
+import com.demo.notification_server.model.request.NotificationUpdateRequest;
 import com.demo.notification_server.util.enums.Status;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,5 +20,9 @@ public interface NotificationMapper {
 
     @Mapping(target = "status", constant = "NOT_PAYED")
     @Mapping(target = "lastCheck", expression = "java(Instant.now())")
-    Notification requestToEntity(NotificationPostRequest request);
+    Notification requestToEntity(NotificationAddRequest request);
+
+    NotificationAddRequest messageToAddRequest(MyKafkaMessage message);
+
+    NotificationUpdateRequest messageToUpdateRequest(MyKafkaMessage message);
 }
