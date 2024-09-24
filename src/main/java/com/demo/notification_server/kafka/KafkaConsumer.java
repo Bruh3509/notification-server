@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class KafkaConsumer {
+    static String SUBJECT = "Ride Payment";
+    static String TEXT = "Please, pay for the ride following the link:%n%s";
     NotificationService notificationService;
     NotificationMapper notificationMapper;
     EmailService emailService;
@@ -27,8 +29,8 @@ public class KafkaConsumer {
         notificationService.addNewDocument(
                 notificationMapper.messageToAddRequest(newPayment)
         );
-        emailService.sendPaymentUrl(newPayment.email(), "Pay Ride",
-                "Please, pay for the ride%n%s".formatted(newPayment.paymentLink()));
+        emailService.sendPaymentUrl(newPayment.email(), SUBJECT,
+                TEXT.formatted(newPayment.paymentLink()));
     }
 
     @KafkaListener(topics = "#{@environment.getProperty('spring.kafka.consumer.update-topic')}",
