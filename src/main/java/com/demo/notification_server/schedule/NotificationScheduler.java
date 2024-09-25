@@ -5,6 +5,7 @@ import com.demo.notification_server.service.NotificationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +23,15 @@ public class NotificationScheduler {
 
     @Scheduled(cron = "0 0 15 * * ?") // fires every day at 15 pm. IDK how to test this
     public void sendEmailReminder() {
-        var rides = notificationService.getAllUnpayed();
-        for (var ride : rides)
-            if (Duration.between(ride.getLastCheck(), Instant.now()).toDays() > 0)
-                emailService.sendPaymentUrl(
-                        ride.getEmail(),
+        var messages = notificationService.getAllUnpayed().stream()
+                .filter(ride -> Duration.between(ride.getLastCheck(), Instant.now()).toDays() > 0)
+                .map(ride -> emailService.createSimpleMessage(ride.getEmail(),
                         SUBJECT,
-                        TEXT.formatted(ride.getPaymentLink())
-                );
+                        TEXT.formatted(ride.getPaymentLink()))
+                )
+                .toList()
+                .toArray(new SimpleMailMessage[0]);
+
+        emailService.sendPaymentUrl(messages);
     }
 }

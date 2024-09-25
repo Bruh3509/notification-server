@@ -1,5 +1,6 @@
 package com.demo.notification_server.service.impl;
 
+import com.demo.notification_server.dto.NotificationDto;
 import com.demo.notification_server.service.EmailService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,23 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendPaymentUrl(String to, String subject, String text) {
+        var message = createSimpleMessage(to, subject, text);
+        mailSender.send(message);
+    }
+
+    @Override
+    public void sendPaymentUrl(SimpleMailMessage[] mailMessages) {
+        mailSender.send(mailMessages);
+    }
+
+    @Override
+    public SimpleMailMessage createSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply@cars.com");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
 
-        mailSender.send(message);
+        return message;
     }
 }
