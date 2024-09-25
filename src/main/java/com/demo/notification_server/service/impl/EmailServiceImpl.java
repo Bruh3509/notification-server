@@ -1,6 +1,5 @@
 package com.demo.notification_server.service.impl;
 
-import com.demo.notification_server.dto.NotificationDto;
 import com.demo.notification_server.service.EmailService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
