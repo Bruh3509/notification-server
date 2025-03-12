@@ -3,7 +3,7 @@ package com.demo.notification_server.service.impl;
 import com.demo.notification_server.dto.NotificationDto;
 import com.demo.notification_server.exception.DocumentNotFoundException;
 import com.demo.notification_server.mapper.NotificationMapper;
-import com.demo.notification_server.model.request.NotificationPostRequest;
+import com.demo.notification_server.model.request.NotificationAddRequest;
 import com.demo.notification_server.model.request.NotificationUpdateRequest;
 import com.demo.notification_server.repository.NotificationRepository;
 import com.demo.notification_server.service.NotificationService;
@@ -40,7 +40,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public NotificationDto addNewDocument(NotificationPostRequest request) {
+    public NotificationDto addNewDocument(NotificationAddRequest request) {
         return mapper.documentToDto(
                 repository.save(
                         mapper.requestToEntity(request)

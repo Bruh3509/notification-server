@@ -1,7 +1,7 @@
 package com.demo.notification_server.controller;
 
 import com.demo.notification_server.dto.NotificationDto;
-import com.demo.notification_server.model.request.NotificationPostRequest;
+import com.demo.notification_server.model.request.NotificationAddRequest;
 import com.demo.notification_server.model.request.NotificationUpdateRequest;
 import com.demo.notification_server.model.response.TestResponse;
 import com.demo.notification_server.service.NotificationService;
@@ -22,22 +22,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class NotificationController {
-    NotificationService service;
+    NotificationService notificationService;
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<TestResponse> testResponse() {
         return new ResponseEntity<>(
-                new TestResponse("Hello form `notification` service"),
+                new TestResponse("Hello from `notification` service"),
                 HttpStatus.OK
         );
     }
 
     @PostMapping(produces = "application/json", consumes = "application/json")
     public ResponseEntity<NotificationDto> addNewPayment(
-            @RequestBody NotificationPostRequest request
+            @RequestBody NotificationAddRequest request
     ) {
         return new ResponseEntity<>(
-                service.addNewDocument(request),
+                notificationService.addNewDocument(request),
                 HttpStatus.CREATED
         );
     }
@@ -47,7 +47,7 @@ public class NotificationController {
             @RequestBody NotificationUpdateRequest request
     ) {
         return new ResponseEntity<>(
-                service.updateDocument(request),
+                notificationService.updateDocument(request),
                 HttpStatus.OK
         );
     }
