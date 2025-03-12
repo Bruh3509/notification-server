@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: notification-server
+  cloud:
+    config:
+      enabled: false
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: qwerty
+      database: notifications
+      port: 27017
+      host: localhost
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ivan.utrushkin@innowise.com
+    password: ${GMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+
+  liquibase:
+    change-log: migration/
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      bootstrap-servers: localhost:29092
+      update-topic: ${UPDATE_PAYMENT_TOPIC}
+      new-topic: ${NEW_PAYMENT_TOPIC}
+      group-id: ${GROUP_ID}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.demo.cars.kafka.model
+  jmx:
+    enabled: false
+  output:
+    ansi:
+      enabled: ALWAYS
+
+server:
+  port: 8084
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka
